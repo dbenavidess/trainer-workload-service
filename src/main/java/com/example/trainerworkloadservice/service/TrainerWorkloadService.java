@@ -74,15 +74,16 @@ public class TrainerWorkloadService {
         }
 
         Map<Integer, Map<Integer, Integer>> summaryMap = fromJson(optWorkload.get().getWorkloadSummaryJson());
+        Map<Integer,Integer> yearly = summaryMap.getOrDefault(year, new HashMap<>());
 
-        return summaryMap.getOrDefault(year, new HashMap<>())
-                .getOrDefault(month, 0);
+        //serialization is converting it into string key
+        return yearly.getOrDefault(String.valueOf(month), 0);
     }
 
     /**
      * JSON Serialization Helper
      */
-    private String toJson(Map<Integer, Map<Integer, Integer>> map) {
+    public String toJson(Map<Integer, Map<Integer, Integer>> map) {
         try {
             return objectMapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {
@@ -93,7 +94,7 @@ public class TrainerWorkloadService {
     /**
      * JSON Deserialization Helper
      */
-    private Map<Integer, Map<Integer, Integer>> fromJson(String json) {
+    public Map<Integer, Map<Integer, Integer>> fromJson(String json) {
         if (json == null || json.isEmpty()) {
             return new HashMap<>();
         }

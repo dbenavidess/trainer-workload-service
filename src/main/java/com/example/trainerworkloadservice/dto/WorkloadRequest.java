@@ -1,13 +1,8 @@
 package com.example.trainerworkloadservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class WorkloadRequest {
 
     private String trainerUsername;
@@ -17,6 +12,19 @@ public class WorkloadRequest {
     private LocalDate trainingDate;
     private int trainingDuration; // Minutes or hours depending on your definition
     private ActionType actionType;
+
+    public WorkloadRequest() {
+    }
+
+    public WorkloadRequest(String trainerUsername, String trainerFirstName, String trainerLastName, boolean isActive, LocalDate trainingDate, int trainingDuration, ActionType actionType) {
+        this.trainerUsername = trainerUsername;
+        this.trainerFirstName = trainerFirstName;
+        this.trainerLastName = trainerLastName;
+        this.isActive = isActive;
+        this.trainingDate = trainingDate;
+        this.trainingDuration = trainingDuration;
+        this.actionType = actionType;
+    }
 
     public String getTrainerUsername() {
         return trainerUsername;
