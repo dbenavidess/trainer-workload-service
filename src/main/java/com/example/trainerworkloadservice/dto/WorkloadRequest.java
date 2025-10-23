@@ -2,7 +2,6 @@ package com.example.trainerworkloadservice.dto;
 
 import java.time.LocalDate;
 
-
 public class WorkloadRequest {
 
     private String trainerUsername;
@@ -10,7 +9,7 @@ public class WorkloadRequest {
     private String trainerLastName;
     private boolean isActive;
     private LocalDate trainingDate;
-    private int trainingDuration; // Minutes or hours depending on your definition
+    private int trainingDuration;
     private ActionType actionType;
 
     public WorkloadRequest() {
