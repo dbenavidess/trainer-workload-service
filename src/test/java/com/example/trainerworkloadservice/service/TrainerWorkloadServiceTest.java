@@ -63,7 +63,7 @@ class TrainerWorkloadServiceTest {
         TrainerWorkload existing = new TrainerWorkload("john_doe", "John", "Doe", true);
         Map<Integer, Map<Integer, Integer>> existingMap = new HashMap<>();
         existingMap.put(2024, new HashMap<>(Map.of(6, 2)));
-        existing.setWorkloadSummaryJson(service.toJson(existingMap));
+        existing.setWorkloadSummary(existingMap);
 
         when(repository.findById("john_doe")).thenReturn(Optional.of(existing));
 
@@ -87,7 +87,7 @@ class TrainerWorkloadServiceTest {
         TrainerWorkload existing = new TrainerWorkload("john_doe", "John", "Doe", true);
         Map<Integer, Map<Integer, Integer>> existingMap = new HashMap<>();
         existingMap.put(2024, new HashMap<>(Map.of(6, 5)));
-        existing.setWorkloadSummaryJson(service.toJson(existingMap));
+        existing.setWorkloadSummary(existingMap);
 
         when(repository.findById("john_doe")).thenReturn(Optional.of(existing));
 
@@ -107,7 +107,7 @@ class TrainerWorkloadServiceTest {
         TrainerWorkload existing = new TrainerWorkload("john_doe", "John", "Doe", true);
         Map<Integer, Map<Integer, Integer>> existingMap = new HashMap<>();
         existingMap.put(2024, new HashMap<>(Map.of(6, 1)));
-        existing.setWorkloadSummaryJson(service.toJson(existingMap));
+        existing.setWorkloadSummary(existingMap);
 
         when(repository.findById("john_doe")).thenReturn(Optional.of(existing));
 
@@ -131,7 +131,7 @@ class TrainerWorkloadServiceTest {
         int realHours = 4;
         months.put(june,realHours);
         map.put(2024, months);
-        existing.setWorkloadSummaryJson(service.toJson(map));
+        existing.setWorkloadSummary(map);
 
         when(repository.findById("john_doe")).thenReturn(Optional.of(existing));
 

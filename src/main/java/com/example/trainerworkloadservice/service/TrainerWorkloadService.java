@@ -17,7 +17,6 @@ import java.util.Optional;
 public class TrainerWorkloadService {
 
     private final TrainerWorkloadRepository repository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public TrainerWorkloadService(TrainerWorkloadRepository repository) {
         this.repository = repository;
@@ -36,8 +35,7 @@ public class TrainerWorkloadService {
                             request.getIsActive()
                     ));
 
-            // Deserialize existing workloadSummaryJson to Map
-            Map<Integer, Map<Integer, Integer>> summaryMap = fromJson(workload.getWorkloadSummaryJson());
+            Map<Integer, Map<Integer, Integer>> summaryMap = workload.getWorkloadSummary();
 
             int year = request.getTrainingDate().getYear();
             int month = request.getTrainingDate().getMonthValue();
@@ -49,12 +47,9 @@ public class TrainerWorkloadService {
             if (request.getActionType() == ActionType.ADD) {
                 summaryMap.get(year).put(month, summaryMap.get(year).get(month) + duration);
             } else if (request.getActionType() == ActionType.DELETE) {
-                int current = summaryMap.get(year).get(month);
-                summaryMap.get(year).put(month, Math.max(0, current - duration)); // avoid negative
+                summaryMap.get(year).put(month, summaryMap.get(year).get(month) - duration);
             }
 
-            // Serialize back to JSON and save
-            workload.setWorkloadSummaryJson(toJson(summaryMap));
             repository.save(workload);
 
             return new WorkloadResponse("Workload processed successfully", 200);
@@ -73,38 +68,10 @@ public class TrainerWorkloadService {
             return 0;
         }
 
-        Map<Integer, Map<Integer, Integer>> summaryMap = fromJson(optWorkload.get().getWorkloadSummaryJson());
+        Map<Integer, Map<Integer, Integer>> summaryMap = optWorkload.get().getWorkloadSummary();
         Map<Integer,Integer> yearly = summaryMap.getOrDefault(year, new HashMap<>());
 
-        //serialization is converting it into string key
-        return yearly.getOrDefault(String.valueOf(month), 0);
+        return yearly.getOrDefault(month, 0);
     }
 
-    /**
-     * JSON Serialization Helper
-     */
-    public String toJson(Map<Integer, Map<Integer, Integer>> map) {
-        try {
-            return objectMapper.writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error serializing workload summary", e);
-        }
-    }
-
-    /**
-     * JSON Deserialization Helper
-     */
-    public Map<Integer, Map<Integer, Integer>> fromJson(String json) {
-        if (json == null || json.isEmpty()) {
-            return new HashMap<>();
-        }
-        try {
-            var typeFactory = objectMapper.getTypeFactory();
-            var innerMapType = typeFactory.constructMapType(Map.class, Integer.class, Integer.class);
-            var outerMapType = typeFactory.constructMapType(Map.class, Integer.class, innerMapType.getRawClass());
-            return objectMapper.readValue(json, outerMapType);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error deserializing workload summary", e);
-        }
-    }
 }

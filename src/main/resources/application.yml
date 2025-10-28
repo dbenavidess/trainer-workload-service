@@ -2,21 +2,17 @@ server:
   port: 8082
 
 spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: trainer-training-summary
+      auto-index-creation: true
+#      username: admin
+#      password: admin
+
   application:
     name: TRAINER-WORKLOAD-SERVICE
-  datasource:
-    url: jdbc:h2:mem:trainerworkloaddb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
   activemq:
     broker-url: tcp://localhost:61616

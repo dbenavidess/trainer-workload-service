@@ -1,32 +1,26 @@
 package com.example.trainerworkloadservice.model;
 
-import jakarta.persistence.*;
-
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@NoArgsConstructor
-@Entity
+@Document("workload-summary")
+@CompoundIndex(name = "first_last_name_idx", def = "{'trainerFirstName': 1, 'trainerLastName': 1}")
 public class TrainerWorkload {
 
-    @Id
+    @Id()
     private String trainerUsername;
 
     private String trainerFirstName;
     private String trainerLastName;
     private boolean isActive;
-
-    /**
-     * Stored as JSON string in DB.
-     * Structure: { year -> { month -> totalHours } }
-     */
-    @Lob
-    private String workloadSummaryJson;
-
-    @Transient
     private Map<Integer, Map<Integer, Integer>> workloadSummary = new HashMap<>();
+
+    public TrainerWorkload() {
+    }
 
     public TrainerWorkload(String trainerUsername, String trainerFirstName, String trainerLastName, boolean isActive) {
         this.trainerUsername = trainerUsername;
@@ -68,13 +62,6 @@ public class TrainerWorkload {
         isActive = active;
     }
 
-    public String getWorkloadSummaryJson() {
-        return workloadSummaryJson;
-    }
-
-    public void setWorkloadSummaryJson(String workloadSummaryJson) {
-        this.workloadSummaryJson = workloadSummaryJson;
-    }
 
     public Map<Integer, Map<Integer, Integer>> getWorkloadSummary() {
         return workloadSummary;
