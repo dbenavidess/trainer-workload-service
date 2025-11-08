@@ -1,10 +1,11 @@
-package com.example.trainerworkloadservice.service;
+package com.example.trainerworkloadservice.unitTests.service;
 
 import com.example.trainerworkloadservice.dto.ActionType;
 import com.example.trainerworkloadservice.dto.WorkloadRequest;
 import com.example.trainerworkloadservice.dto.WorkloadResponse;
 import com.example.trainerworkloadservice.model.TrainerWorkload;
 import com.example.trainerworkloadservice.repository.TrainerWorkloadRepository;
+import com.example.trainerworkloadservice.service.TrainerWorkloadService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class TrainerWorkloadServiceTest {
@@ -77,8 +77,6 @@ class TrainerWorkloadServiceTest {
 
         ArgumentCaptor<TrainerWorkload> captor = ArgumentCaptor.forClass(TrainerWorkload.class);
         verify(repository).save(captor.capture());
-
-        TrainerWorkload savedTrainer = captor.getValue();
 
     }
 
