@@ -3,6 +3,7 @@ package com.example.trainerworkloadservice.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -19,8 +20,11 @@ import java.util.Map;
 public class JmsConfig {
 
     @Bean
-    public SingleConnectionFactory singleConnectionFactory() {
+    public SingleConnectionFactory singleConnectionFactory(ActiveMQProperties properties) {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
+        activeMQConnectionFactory.setBrokerURL(properties.getBrokerUrl());
+        activeMQConnectionFactory.setUserName(properties.getUser());
+        activeMQConnectionFactory.setPassword(properties.getPassword());
         return new SingleConnectionFactory(activeMQConnectionFactory);
     }
 
